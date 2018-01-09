@@ -1,4 +1,4 @@
-# Salesforce REST API Client for Laravel 5
+# Salesforce REST API Client for PHP
 
 [![Laravel](https://img.shields.io/badge/Laravel-5.5-orange.svg?style=flat-square)](http://laravel.com)
 [![Latest Stable Version](https://img.shields.io/packagist/v/omniphx/forrest.svg?style=flat-square)](https://packagist.org/packages/omniphx/forrest)
@@ -6,23 +6,23 @@
 [![License](https://img.shields.io/packagist/l/omniphx/forrest.svg?style=flat-square)](https://packagist.org/packages/omniphx/forrest)
 [![Build Status](https://img.shields.io/travis/omniphx/forrest.svg?style=flat-square)](https://travis-ci.org/omniphx/forrest)
 
-Salesforce/Force.com REST API client for Laravel. While it acts as more of a wrapper of the API methods, it should provide you with all the flexibility you will need to interact with the REST service.
+Forrest is a Salesforce/Force.com REST API client for PHP. While it acts as more of a wrapper of the API methods, it should provide you with all the flexibility you will need to interact with the REST service.
 
-While this package is built for Laravel, it has been decoupled so that it can be extended into any framework or vanilla PHP application. Currently the only support is for Larevel 4, 5 and Lumen.
+The package has optional support for [Larevel](https://laravel.com/) and [Lumen](https://lumen.laravel.com/); includes Service Providers and Facades for easy integration.
+
+While this package was built for Laravel, it has been decoupled so that it can be extended into any framework or vanilla PHP application.
 
 ## Installation
 
-> If you are upgrading to Version 2.0, be sure to re-publish your config file.
+> If you are using Laravel and are upgrading to Version 2.0, be sure to re-publish your config file.
 
-Forrest can be installed through composer. Open your `composer.json` file and add the following to the `require` key:
+To install the most recent version, run the following command.
 
-```php
-"omniphx/forrest": "2.*"
+```bash
+$ composer require omniphx/forrest
 ```
 
-Next run `composer update` from the command line to install the package.
-
-### Laravel Installation
+### Integration in Laravel
 
 Add the service provider and alias to your `config/app.php` file:
 
@@ -33,7 +33,7 @@ Omniphx\Forrest\Providers\Laravel\ForrestServiceProvider::class
 
 > For Laravel 4, add `Omniphx\Forrest\Providers\Laravel4\ForrestServiceProvider` in `app/config/app.php`. Alias will remain the same.
 
-### Lumen Installation
+### Integration in Lumen
 
 ```php
 class_alias('Omniphx\Forrest\Providers\Laravel\Facades\Forrest', 'Forrest');
@@ -46,19 +46,29 @@ Then you'll utilize the Lumen service provider by registering it in the `bootstr
 
 ### Configuration
 
-You will need a configuration file to add your credentials. Publish a config file using the `artisan` command:
-
-```bash
-php artisan vendor:publish
-```
-
-You can find the config file in: `config/forrest.php`
+You will need a configuration file to add your credentials.
 
 > For Lumen, you should copy the config file from `src/config/config.php` and add it to a `forrest.php` configuration file under a config directory in the root of your application.
 
-> For Laravel 4, run `php artisan config:publish omniphx/forrest`. It will be found in `app/config/omniphx/forrest/config.php`
+#### Publish configuration in Laravel 5
+
+```bash
+$ php artisan vendor:publish
+```
+
+The configuration file is copied to `config/forrest.php`.
+
+#### Publish configuration in Laravel 4
+
+```bash
+$ php artisan config:publish omniphx/forrest
+```
+
+The configuration file is copied to `app/config/omniphx/forrest/config.php`.
 
 ## Getting Started
+
+> Code examples below use Laravel to demonstrate the package's features.
 
 ### Setting up a Connected App
 

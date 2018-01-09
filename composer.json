@@ -1,6 +1,6 @@
 {
     "name": "omniphx/forrest",
-    "description": "Salesforce / Force.com REST API Client for Laravel 5",
+    "description": "Salesforce / Force.com REST API Client with support for Laravel integration",
     "license":"MIT",
     "keywords":["salesforce", "laravel", "rest", "force.com", "force"],
     "authors": [
@@ -13,11 +13,6 @@
     ],
     "require": {
         "php": ">=5.6",
-        "illuminate/cache" : ">5",
-        "illuminate/contracts" : ">5",
-        "illuminate/config": ">5",
-        "illuminate/http" : ">5",
-        "illuminate/routing" : ">5",
         "guzzlehttp/guzzle": ">6.0"
     },
     "require-dev": {
@@ -30,6 +25,9 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "2.5-dev"
+        },
         "laravel": {
             "providers": [
                 "Omniphx\\Forrest\\Providers\\Laravel\\ForrestServiceProvider"
