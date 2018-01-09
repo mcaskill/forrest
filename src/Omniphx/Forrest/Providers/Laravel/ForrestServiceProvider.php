@@ -3,11 +3,11 @@
 namespace Omniphx\Forrest\Providers\Laravel;
 
 use GuzzleHttp\Client;
-use Omniphx\Forrest\Providers\BaseServiceProvider;
+use Omniphx\Forrest\Providers\IlluminateServiceProvider;
 use Omniphx\Forrest\Providers\Laravel\LaravelCache;
 use Omniphx\Forrest\Providers\Laravel\LaravelSession;
 
-class ForrestServiceProvider extends BaseServiceProvider
+class ForrestServiceProvider extends IlluminateServiceProvider
 {
     /**
      * Returns the location of the package config file.
@@ -21,7 +21,7 @@ class ForrestServiceProvider extends BaseServiceProvider
 
     protected function getClient()
     {
-        return new Client(['http_errors' => true]);
+        return new Client([ 'http_errors' => true ]);
     }
 
     protected function getRedirect()
@@ -32,9 +32,6 @@ class ForrestServiceProvider extends BaseServiceProvider
     protected function getStorage($storageType)
     {
         switch ($storageType) {
-            case 'session':
-                $storage = new LaravelSession(app('config'), app('request')->session());
-                break;
             case 'cache':
                 $storage = new LaravelCache(app('config'), app('cache')->store());
                 break;

@@ -3,11 +3,11 @@
 namespace Omniphx\Forrest\Providers\Lumen;
 
 use GuzzleHttp\Client;
-use Omniphx\Forrest\Providers\BaseServiceProvider;
+use Omniphx\Forrest\Providers\IlluminateServiceProvider;
 use Omniphx\Forrest\Providers\Lumen\LumenRedirect;
 use Omniphx\Forrest\Providers\Laravel\LaravelCache;
 
-class ForrestServiceProvider extends BaseServiceProvider
+class ForrestServiceProvider extends IlluminateServiceProvider
 {
     /**
      * Returns the location of the package config file.
@@ -21,7 +21,7 @@ class ForrestServiceProvider extends BaseServiceProvider
 
     protected function getClient()
     {
-        return new Client(['http_errors' => true]);
+        return new Client([ 'http_errors' => true ]);
     }
 
     protected function getRedirect()

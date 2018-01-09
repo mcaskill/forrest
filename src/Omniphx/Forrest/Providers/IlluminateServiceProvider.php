@@ -25,7 +25,7 @@ use Omniphx\Forrest\Repositories\TokenRepository;
 use Omniphx\Forrest\Repositories\VersionRepository;
 
 
-abstract class BaseServiceProvider extends ServiceProvider
+abstract class IlluminateServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -84,12 +84,12 @@ abstract class BaseServiceProvider extends ServiceProvider
             $authenticationType = config('forrest.authentication');
 
             // Dependencies
-            $httpClient    = $this->getClient();
-            $input     = new LaravelInput(app('request'));
-            $event     = new LaravelEvent(app('events'));
-            $encryptor = new LaravelEncryptor(app('encrypter'));
-            $redirect  = $this->getRedirect();
-            $storage   = $this->getStorage($storageType);
+            $httpClient = $this->getClient();
+            $input      = new LaravelInput(app('request'));
+            $event      = new LaravelEvent(app('events'));
+            $encryptor  = new LaravelEncryptor(app('encrypter'));
+            $redirect   = $this->getRedirect();
+            $storage    = $this->getStorage($storageType);
 
             $refreshTokenRepo = new RefreshTokenRepository($encryptor, $storage);
             $tokenRepo        = new TokenRepository($encryptor, $storage);
@@ -101,55 +101,27 @@ abstract class BaseServiceProvider extends ServiceProvider
             $formatter = new JSONFormatter($tokenRepo, $settings);
 
             switch ($authenticationType) {
-                case 'WebServer':
-                    $forrest = new WebServer(
-                        $httpClient,
-                        $encryptor,
-                        $event,
-                        $input,
-                        $redirect,
-                        $instanceURLRepo,
-                        $refreshTokenRepo,
-                        $resourceRepo,
-                        $stateRepo,
-                        $tokenRepo,
-                        $versionRepo,
-                        $formatter,
-                        $settings);
-                    break;
                 case 'UserPassword':
-                    $forrest = new UserPassword(
-                        $httpClient,
-                        $encryptor,
-                        $event,
-                        $input,
-                        $redirect,
-                        $instanceURLRepo,
-                        $refreshTokenRepo,
-                        $resourceRepo,
-                        $stateRepo,
-                        $tokenRepo,
-                        $versionRepo,
-                        $formatter,
-                        $settings);
+                    $forceClient = UserPassword::class;
                     break;
                 default:
-                    $forrest = new WebServer(
-                        $httpClient,
-                        $encryptor,
-                        $event,
-                        $input,
-                        $redirect,
-                        $instanceURLRepo,
-                        $refreshTokenRepo,
-                        $resourceRepo,
-                        $stateRepo,
-                        $tokenRepo,
-                        $versionRepo,
-                        $formatter,
-                        $settings);
-                    break;
+                    $forceClient = WebServer::class;
             }
+
+            $forrest = new $forceClient(
+                $httpClient,
+                $encryptor,
+                $event,
+                $input,
+                $redirect,
+                $instanceURLRepo,
+                $refreshTokenRepo,
+                $resourceRepo,
+                $stateRepo,
+                $tokenRepo,
+                $versionRepo,
+                $formatter,
+                $settings);
 
             return $forrest;
         });
