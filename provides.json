@@ -1,0 +1,11 @@
+{
+    "providers": [
+        "Omniphx\\Forrest\\Providers\\Laravel\\ForrestServiceProvider"
+    ],
+    "aliases": [
+        {
+        	"alias": "Forrest",
+	        "facade": "Omniphx\\Forrest\\Providers\\Laravel\\Facades\\Forrest"
+	    }
+    ]
+}
