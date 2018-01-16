@@ -8,7 +8,7 @@ class BaseFormatter implements FormatterInterface
 {
     public function setHeaders()
     {
-        $headers['Accept'] = 'application/json';
+        $headers['Accept']       = 'application/json';
         $headers['Content-Type'] = 'application/json';
 
         return $headers;

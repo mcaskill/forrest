@@ -11,7 +11,8 @@ class JSONFormatter implements FormatterInterface
     protected $settings;
     protected $headers;
 
-    public function __construct(RepositoryInterface $tokenRepository, $settings) {
+    public function __construct(RepositoryInterface $tokenRepository, $settings)
+    {
         $this->tokenRepository = $tokenRepository;
         $this->settings        = $settings;
     }

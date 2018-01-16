@@ -51,12 +51,12 @@ class WebServer extends Client implements WebServerInterface
      */
     public function callback()
     {
-        //Salesforce sends us an authorization code as part of the Web Server OAuth Authentication Flow
+        // Salesforce sends us an authorization code as part of the Web Server OAuth Authentication Flow
         $code = $this->input->get('code');
 
         $stateOptions = json_decode(urldecode($this->input->get('state')), true);
 
-        //Store instance URL
+        // Store instance URL
         $loginURL = $stateOptions['loginUrl'];
 
         // Store user options so they can be used later
@@ -100,11 +100,11 @@ class WebServer extends Client implements WebServerInterface
     public function refresh()
     {
         $refreshToken = $this->refreshTokenRepo->get();
-        $tokenURL = $this->getLoginURL();
+        $tokenURL  = $this->getLoginURL();
         $tokenURL .= '/services/oauth2/token';
 
         $response = $this->httpClient->request('post', $tokenURL, [
-            'form_params'    => [
+            'form_params' => [
                 'refresh_token' => $refreshToken,
                 'grant_type'    => 'refresh_token',
                 'client_id'     => $this->credentials['consumerKey'],
@@ -127,7 +127,7 @@ class WebServer extends Client implements WebServerInterface
     public function revoke()
     {
         $accessToken = $this->getTokenData()['access_token'];
-        $url = $this->getLoginURL();
+        $url  = $this->getLoginURL();
         $url .= '/services/oauth2/revoke';
 
         $options['headers']['content-type'] = 'application/x-www-form-urlencoded';

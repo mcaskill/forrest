@@ -2,15 +2,15 @@
 
 namespace Omniphx\Forrest\Authentications;
 
-use Omniphx\Forrest\Client as BaseAuthentication;
+use Omniphx\Forrest\Client;
 use Omniphx\Forrest\Interfaces\UserPasswordInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class UserPassword extends BaseAuthentication implements UserPasswordInterface
+class UserPassword extends Client implements UserPasswordInterface
 {
     public function authenticate($url = null)
     {
-        $loginURL = $url === null ? $this->credentials['loginURL'] : $url;
+        $loginURL  = $url === null ? $this->credentials['loginURL'] : $url;
         $loginURL .= '/services/oauth2/token';
 
         $authToken = $this->getAuthToken($loginURL);
@@ -28,7 +28,7 @@ class UserPassword extends BaseAuthentication implements UserPasswordInterface
      */
     public function refresh()
     {
-        $tokenURL = $this->credentials['loginURL'] . '/services/oauth2/token';
+        $tokenURL  = $this->credentials['loginURL'] . '/services/oauth2/token';
         $authToken = $this->getAuthToken($tokenURL);
 
         $this->tokenRepo->put($authToken);

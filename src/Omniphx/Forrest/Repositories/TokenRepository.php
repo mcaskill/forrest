@@ -7,12 +7,13 @@ use Omniphx\Forrest\Interfaces\EncryptorInterface;
 use Omniphx\Forrest\Interfaces\StorageInterface;
 use Omniphx\Forrest\Exceptions\MissingTokenException;
 
-class TokenRepository implements RepositoryInterface {
-
+class TokenRepository implements RepositoryInterface
+{
     protected $encryptor;
     protected $storage;
 
-    public function __construct(EncryptorInterface $encryptor, StorageInterface $storage) {
+    public function __construct(EncryptorInterface $encryptor, StorageInterface $storage)
+    {
         $this->encryptor = $encryptor;
         $this->storage   = $storage;
     }
@@ -45,12 +46,16 @@ class TokenRepository implements RepositoryInterface {
         return $this->encryptor->decrypt($token);
     }
 
-    public function has() {
+    public function has()
+    {
         return $this->storage->has('token');
     }
 
-    private function verify() {
-        if ($this->storage->has('token')) return;
+    private function verify()
+    {
+        if ($this->storage->has('token')) {
+            return;
+        }
 
         throw new MissingTokenException('No token available');
     }

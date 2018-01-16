@@ -8,7 +8,7 @@ class XMLFormatter implements FormatterInterface
 {
     public function setHeaders()
     {
-        $headers['Accept'] = 'application/xml';
+        $headers['Accept']       = 'application/xml';
         $headers['Content-Type'] = 'application/xml';
 
         return $headers;

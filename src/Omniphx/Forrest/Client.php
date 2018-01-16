@@ -62,16 +62,50 @@ abstract class Client
     /**
      * Event emitter.
      *
-     * @var Interfaces\EventInterface
+     * @var EventInterface
      */
     protected $event;
 
+    /**
+     * Resource repository.
+     *
+     * @var RepositoryInterface
+     */
     protected $resourceRepo;
 
+    /**
+     * State data repository.
+     *
+     * @var RepositoryInterface
+     */
     protected $stateRepo;
 
+    /**
+     * Access token repository.
+     *
+     * @var RepositoryInterface
+     */
     protected $tokenRepo;
 
+    /**
+     * Refresh access token repository.
+     *
+     * @var RepositoryInterface
+     */
+    protected $refreshTokenRepo;
+
+    /**
+     * Salesforce base URL repository.
+     *
+     * @var RepositoryInterface
+     */
+    protected $instanceURLRepo;
+
+    /**
+     * Version repository.
+     *
+     * @var RepositoryInterface
+     */
     protected $versionRepo;
 
     /**
@@ -89,19 +123,24 @@ abstract class Client
     protected $redirect;
 
     /**
-     * Inteface for Input calls.
+     * Interface for Input calls.
      *
-     * @var \Omniphx\Forrest\Interfaces\InputInterface
+     * @var InputInterface
      */
     protected $input;
 
     /**
-     * Inteface for Input calls.
+     * Interface for Input calls.
      *
-     * @var \Omniphx\Forrest\Interfaces\EncryptorInterface
+     * @var EncryptorInterface
      */
     protected $encryptor;
 
+    /**
+     * Interface for Formatter.
+     *
+     * @var FormatterInterface
+     */
     protected $formatter;
 
     /**
@@ -400,7 +439,7 @@ abstract class Client
     public function describe($object_name = null, $options = [])
     {
         $url = sprintf('%s/sobjects', $this->getBaseUrl());
-        
+
         if ( ! empty($object_name)) {
             $url .= sprintf('/%s/describe', $object_name);
         }
@@ -598,12 +637,12 @@ abstract class Client
      */
     public function suggestedQueries($query, $options = [])
     {
-        $url = $this->instanceURLRepo->get();
+        $url  = $this->instanceURLRepo->get();
         $url .= $this->resourceRepo->get('search');
         $url .= '/suggestSearchQueries?q=';
         $url .= urlencode($query);
 
-        $parameters = ['language' => $this->settings['language']];
+        $parameters = [ 'language' => $this->settings['language'] ];
 
         if (isset($options['parameters'])) {
             $parameters = array_replace_recursive($parameters, $options['parameters']);
@@ -625,7 +664,7 @@ abstract class Client
      */
     public function custom($customURI, $options = [])
     {
-        $url = $this->instanceURLRepo->get();
+        $url  = $this->instanceURLRepo->get();
         $url .= '/services/apexrest';
         $url .= $customURI;
 
@@ -633,7 +672,7 @@ abstract class Client
 
         if (isset($options['parameters'])) {
             $parameters = array_replace_recursive($parameters, $options['parameters']);
-            $url .= '?'.http_build_query($parameters);
+            $url .= '?' . http_build_query($parameters);
         }
 
         return $this->request($url, $options);
@@ -662,7 +701,7 @@ abstract class Client
      */
     public function __call($name, $arguments)
     {
-        $url = $this->instanceURLRepo->get();
+        $url  = $this->instanceURLRepo->get();
         $url .= $this->resourceRepo->get($name);
         $url .= $this->appendURL($arguments);
 
@@ -672,8 +711,13 @@ abstract class Client
     }
 
     private function appendURL($arguments) {
-        if (!isset($arguments[0])) return '';
-        if (!is_string($arguments[0])) return '';
+        if (!isset($arguments[0])) {
+            return '';
+        }
+
+        if (!is_string($arguments[0])) {
+            return '';
+        }
 
         return "/$arguments[0]";
     }
@@ -689,7 +733,10 @@ abstract class Client
     }
 
     private function setArgument($argument, &$options) {
-        if (!is_array($argument)) return;
+        if (!is_array($argument)) {
+            return;
+        }
+
         foreach ($argument as $key => $value) {
             $options[$key] = $value;
         }
@@ -711,7 +758,7 @@ abstract class Client
 
     protected function getBaseUrl()
     {
-        $url = $this->instanceURLRepo->get();
+        $url  = $this->instanceURLRepo->get();
         $url .= $this->versionRepo->get()['url'];
 
         return $url;
@@ -731,7 +778,9 @@ abstract class Client
 
         $this->storeConfiguredVersion($versions);
 
-        if($this->versionRepo->has()) return;
+        if ($this->versionRepo->has()) {
+            return;
+        }
 
         $this->storeLatestVersion($versions);
     }
@@ -739,16 +788,21 @@ abstract class Client
     private function storeConfiguredVersion($versions)
     {
         $configVersion = $this->settings['version'];
-        if (empty($configVersion)) return;
+        if (empty($configVersion)) {
+            return;
+        }
 
-        foreach($versions as $version) {
+        foreach ($versions as $version) {
             $this->determineIfConfiguredVersionExists($version, $configVersion);
         }
     }
 
     private function determineIfConfiguredVersionExists($version, $configVersion)
     {
-        if ($version['version'] !== $configVersion) return;
+        if ($version['version'] !== $configVersion) {
+            return;
+        }
+
         $this->versionRepo->put($version);
     }
 
@@ -767,13 +821,15 @@ abstract class Client
      */
     protected function storeResources()
     {
-        $resources = $this->resources(['format' => 'json']);
+        $resources = $this->resources([ 'format' => 'json' ]);
         $this->resourceRepo->put($resources);
     }
 
     protected function handleAuthenticationErrors(array $response)
     {
-        if (!isset($response['error'])) return;
+        if (!isset($response['error'])) {
+            return;
+        }
 
         throw new InvalidLoginCreditialsException($response['error_description']);
     }

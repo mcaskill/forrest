@@ -8,7 +8,7 @@ class URLEncodedFormatter implements FormatterInterface
 {
     public function setHeaders()
     {
-        $headers['Accept'] = 'application/x-www-form-urlencoded';
+        $headers['Accept']       = 'application/x-www-form-urlencoded';
         $headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
         return $headers;

@@ -6,15 +6,17 @@ use Omniphx\Forrest\Interfaces\RepositoryInterface;
 use Omniphx\Forrest\Interfaces\StorageInterface;
 use Omniphx\Forrest\Exceptions\MissingStateException;
 
-class StateRepository implements RepositoryInterface {
-
+class StateRepository implements RepositoryInterface
+{
     protected $storage;
 
-    public function __construct(StorageInterface $storage) {
+    public function __construct(StorageInterface $storage)
+    {
         $this->storage = $storage;
     }
 
-    public function put($state) {
+    public function put($state)
+    {
         $this->storage->put('stateOptions', $state);
     }
 
@@ -25,12 +27,16 @@ class StateRepository implements RepositoryInterface {
         return $this->storage->get('stateOptions');
     }
 
-    public function has() {
+    public function has()
+    {
         return $this->storage->has('stateOptions');
     }
 
-    private function verify() {
-        if ($this->storage->has('stateOptions')) return;
+    private function verify()
+    {
+        if ($this->storage->has('stateOptions')) {
+            return;
+        }
 
         throw new MissingStateException('No state available');
     }
